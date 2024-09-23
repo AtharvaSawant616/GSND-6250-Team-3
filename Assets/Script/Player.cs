@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
@@ -8,25 +9,45 @@ public class Player : MonoBehaviour
     public float gravity = -9.8f;
     public float mouseSensitivity = 100f;
     public Transform playerCamera;
+    public bool getKey = false;
+    public GameObject door;
 
+    public AudioClip[] footstepSounds; // Array to hold footstep sounds
+    private AudioSource audioSource;
     private CharacterController controller;
     private Vector3 velocity;
     private float xRotation = 0f;
+    public bool isMoving = false; // To track if the player is moving
+    private float stepInterval = 0.5f; // Time interval between steps
+    private float stepTimer = 0f; // Timer for footsteps
 
     void Start()
     {
         controller = GetComponent<CharacterController>();
-        Cursor.lockState = CursorLockMode.Locked; // 锁定鼠标在屏幕中央
+        Cursor.lockState = CursorLockMode.Locked;
+
+        // Get the AudioSource component
+        audioSource = GetComponent<AudioSource>();
+
+        // Ensure there is only one AudioListener in the scene
+        AudioListener[] listeners = FindObjectsOfType<AudioListener>();
+        if (listeners.Length > 1)
+        {
+            for (int i = 1; i < listeners.Length; i++)
+            {
+                Destroy(listeners[i]);
+            }
+        }
     }
 
     void Update()
     {
-        // 处理鼠标视角旋转
+        // Handle mouse rotation
         float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
         float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
 
         xRotation -= mouseY;
-        xRotation = Mathf.Clamp(xRotation, -90f, 90f); // 限制玩家上下看角度
+        xRotation = Mathf.Clamp(xRotation, -90f, 90f); // Limit player's up and down view angles
 
         playerCamera.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
         transform.Rotate(Vector3.up * mouseX);
@@ -34,19 +55,19 @@ public class Player : MonoBehaviour
         float x = 0f;
         float z = 0f;
 
-        if (Input.GetKey(KeyCode.W)) // 向前
+        if (Input.GetKey(KeyCode.W)) // Move forward
         {
             z = 1f;
         }
-        if (Input.GetKey(KeyCode.S)) // 向后
+        if (Input.GetKey(KeyCode.S)) // Move backward
         {
             z = -1f;
         }
-        if (Input.GetKey(KeyCode.A)) // 向左
+        if (Input.GetKey(KeyCode.A)) // Move left
         {
             x = -1f;
         }
-        if (Input.GetKey(KeyCode.D)) // 向右
+        if (Input.GetKey(KeyCode.D)) // Move right
         {
             x = 1f;
         }
@@ -54,8 +75,53 @@ public class Player : MonoBehaviour
         Vector3 move = transform.right * x + transform.forward * z;
         controller.Move(move * speed * Time.deltaTime);
 
-        // 应用重力
+        // Apply gravity
         velocity.y += gravity * Time.deltaTime;
         controller.Move(velocity * Time.deltaTime);
+
+        // Check if the player is moving
+        isMoving = move.magnitude > 0.1f && controller.isGrounded;
+
+        // Handle footstep sounds
+        if (isMoving)
+        {
+            stepTimer -= Time.deltaTime;
+            if (stepTimer <= 0f)
+            {
+                PlayFootstepSound();
+                stepTimer = stepInterval; // Reset step timer
+            }
+        }
+    }
+
+    // Play a random footstep sound
+    void PlayFootstepSound()
+    {
+        if (footstepSounds.Length > 0 && audioSource != null)
+        {
+            int randomIndex = Random.Range(0, footstepSounds.Length);
+            audioSource.PlayOneShot(footstepSounds[randomIndex]);
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.tag == "Key")
+        {
+            Destroy(other.gameObject);
+            getKey = true;
+        }
+        if (other.gameObject.tag == "Door")
+        {
+            openDoor();
+        }
+    }
+
+    private void openDoor()
+    {
+        if (getKey == true)
+        {
+            SceneManager.LoadScene("Graveyard");
+        }
     }
 }
