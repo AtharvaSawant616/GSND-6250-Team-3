@@ -20,6 +20,7 @@ public class Player : MonoBehaviour
     public bool isMoving = false; // To track if the player is moving
     private float stepInterval = 0.5f; // Time interval between steps
     private float stepTimer = 0f; // Timer for footsteps
+    private Animator cameraAnimator; // Reference to the camera animator
 
     void Start()
     {
@@ -28,6 +29,9 @@ public class Player : MonoBehaviour
 
         // Get the AudioSource component
         audioSource = GetComponent<AudioSource>();
+
+        // Get the Animator component from the camera
+        cameraAnimator = playerCamera.GetComponent<Animator>();
 
         // Ensure there is only one AudioListener in the scene
         AudioListener[] listeners = FindObjectsOfType<AudioListener>();
@@ -90,6 +94,19 @@ public class Player : MonoBehaviour
             {
                 PlayFootstepSound();
                 stepTimer = stepInterval; // Reset step timer
+            }
+
+            // Trigger camera shake animation when player is moving
+            if (cameraAnimator != null)
+            {
+                cameraAnimator.SetBool("isMoving", true); // Assuming you have a boolean "isMoving" parameter in the animation
+            }
+        }
+        else
+        {
+            if (cameraAnimator != null)
+            {
+                cameraAnimator.SetBool("isMoving", false); // Stop camera shake when player stops moving
             }
         }
     }
