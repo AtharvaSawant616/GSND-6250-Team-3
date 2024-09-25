@@ -12,15 +12,18 @@ public class Player : MonoBehaviour
     public bool getKey = false;
     public GameObject door;
 
-    public AudioClip[] footstepSounds; // Array to hold footstep sounds
+    public AudioClip[] footstepSounds;
     private AudioSource audioSource;
     private CharacterController controller;
     private Vector3 velocity;
     private float xRotation = 0f;
-    public bool isMoving = false; // To track if the player is moving
-    private float stepInterval = 0.5f; // Time interval between steps
-    private float stepTimer = 0f; // Timer for footsteps
-    private Animator cameraAnimator; // Reference to the camera animator
+    public bool isMoving = false;
+    private float stepInterval = 0.5f;
+    private float stepTimer = 0f;
+    private Animator cameraAnimator;
+    public RedLight[] redLights;
+
+    public AudioSource alarmAudioSource;
 
     void Start()
     {
@@ -29,9 +32,6 @@ public class Player : MonoBehaviour
 
         // Get the AudioSource component
         audioSource = GetComponent<AudioSource>();
-
-        // Get the Animator component from the camera
-        cameraAnimator = playerCamera.GetComponent<Animator>();
 
         // Ensure there is only one AudioListener in the scene
         AudioListener[] listeners = FindObjectsOfType<AudioListener>();
@@ -46,15 +46,24 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-        // Handle mouse rotation
-        float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
-        float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
+    // 获取鼠标的输入量
+    float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
+    float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
 
-        xRotation -= mouseY;
-        xRotation = Mathf.Clamp(xRotation, -90f, 90f); // Limit player's up and down view angles
+    // 调整垂直旋转角度（X 轴旋转）
+    xRotation -= mouseY;
 
-        playerCamera.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
-        transform.Rotate(Vector3.up * mouseX);
+    // 限制垂直旋转角度，避免旋转过度
+    xRotation = Mathf.Clamp(xRotation, -90f, 90f);
+
+    // 将旋转应用到摄像机的局部旋转（垂直方向的上下移动）
+    playerCamera.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
+
+    // 应用水平旋转到玩家的整体（绕 Y 轴旋转，左右移动）
+    transform.Rotate(Vector3.up * mouseX);
+
+    // 下面是让摄像头随 Y 轴旋转（附加的 X 轴旋转）
+    transform.localRotation = Quaternion.Euler(xRotation, transform.localRotation.eulerAngles.y, 0f);
 
         float x = 0f;
         float z = 0f;
@@ -95,19 +104,6 @@ public class Player : MonoBehaviour
                 PlayFootstepSound();
                 stepTimer = stepInterval; // Reset step timer
             }
-
-            // Trigger camera shake animation when player is moving
-            if (cameraAnimator != null)
-            {
-                cameraAnimator.SetBool("isMoving", true); // Assuming you have a boolean "isMoving" parameter in the animation
-            }
-        }
-        else
-        {
-            if (cameraAnimator != null)
-            {
-                cameraAnimator.SetBool("isMoving", false); // Stop camera shake when player stops moving
-            }
         }
     }
 
@@ -127,6 +123,15 @@ public class Player : MonoBehaviour
         {
             Destroy(other.gameObject);
             getKey = true;
+
+            // Trigger crazy flicker mode for all red lights
+            TriggerRedLightFlicker();
+
+            // Play the alarm BGM
+            if (alarmAudioSource != null)
+            {
+                alarmAudioSource.Play();
+            }
         }
         if (other.gameObject.tag == "Door")
         {
@@ -139,6 +144,15 @@ public class Player : MonoBehaviour
         if (getKey == true)
         {
             SceneManager.LoadScene("Graveyard");
+        }
+    }
+
+    // Method to trigger flickering of red lights
+    private void TriggerRedLightFlicker()
+    {
+        foreach (RedLight redLight in redLights)
+        {
+            redLight.StartFlickering(); // Start flickering on each red light
         }
     }
 }
