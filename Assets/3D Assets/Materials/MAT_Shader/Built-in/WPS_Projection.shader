@@ -31,6 +31,7 @@ Shader "Custom/WPS_ProjectionShader"
         // Use shader model 3.0 target, to get nicer looking lighting
         #pragma target 3.0
 
+
         sampler2D _DiffuseMap;
         sampler2D _GlossinessMap;
         sampler2D _HeightMap;
