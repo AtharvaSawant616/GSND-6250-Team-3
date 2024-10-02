@@ -22,6 +22,14 @@ public class Player : MonoBehaviour
     private float stepTimer = 0f;
     private Animator cameraAnimator;
     public RedLight[] redLights;
+    public float jumpHeight = 2.0f;
+
+    // Added variables for ground check buffer
+    public float groundCheckDistance = 0.2f; // Distance to check for ground
+    public LayerMask groundMask; // Layer to check ground collisions
+    private bool isGroundedBuffer = false; // Ground buffer
+    private float groundBufferTime = 0.2f; // Buffer time for jumping after touching ground
+    private float lastGroundedTime = 0f;
 
     public AudioSource alarmAudioSource;
 
@@ -46,54 +54,47 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-    // 获取鼠标的输入量
-    float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
-    float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
+        // Mouse movement for looking around
+        float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
+        float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
 
-    // 调整垂直旋转角度（X 轴旋转）
-    xRotation -= mouseY;
-
-    // 限制垂直旋转角度，避免旋转过度
-    xRotation = Mathf.Clamp(xRotation, -90f, 90f);
-
-    // 将旋转应用到摄像机的局部旋转（垂直方向的上下移动）
-    playerCamera.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
-
-    // 应用水平旋转到玩家的整体（绕 Y 轴旋转，左右移动）
-    transform.Rotate(Vector3.up * mouseX);
-
-    // 下面是让摄像头随 Y 轴旋转（附加的 X 轴旋转）
-    transform.localRotation = Quaternion.Euler(xRotation, transform.localRotation.eulerAngles.y, 0f);
+        xRotation -= mouseY;
+        xRotation = Mathf.Clamp(xRotation, -90f, 90f);
+        playerCamera.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
+        transform.Rotate(Vector3.up * mouseX);
 
         float x = 0f;
         float z = 0f;
 
-        if (Input.GetKey(KeyCode.W)) // Move forward
-        {
-            z = 1f;
-        }
-        if (Input.GetKey(KeyCode.S)) // Move backward
-        {
-            z = -1f;
-        }
-        if (Input.GetKey(KeyCode.A)) // Move left
-        {
-            x = -1f;
-        }
-        if (Input.GetKey(KeyCode.D)) // Move right
-        {
-            x = 1f;
-        }
+        if (Input.GetKey(KeyCode.W)) z = 1f;
+        if (Input.GetKey(KeyCode.S)) z = -1f;
+        if (Input.GetKey(KeyCode.A)) x = -1f;
+        if (Input.GetKey(KeyCode.D)) x = 1f;
 
         Vector3 move = transform.right * x + transform.forward * z;
         controller.Move(move * speed * Time.deltaTime);
+
+        // Ground check using raycast
+        isGroundedBuffer = Physics.Raycast(transform.position, Vector3.down, groundCheckDistance, groundMask);
+
+        if (isGroundedBuffer)
+        {
+            lastGroundedTime = Time.time; // Update last grounded time
+            velocity.y = -2f;
+
+            // Jump input with buffer time
+            if (Input.GetKeyDown(KeyCode.Space) && Time.time - lastGroundedTime <= groundBufferTime)
+            {
+                velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
+            }
+        }
 
         // Apply gravity
         velocity.y += gravity * Time.deltaTime;
         controller.Move(velocity * Time.deltaTime);
 
         // Check if the player is moving
-        isMoving = move.magnitude > 0.1f && controller.isGrounded;
+        isMoving = move.magnitude > 0.1f && isGroundedBuffer;
 
         // Handle footstep sounds
         if (isMoving)
