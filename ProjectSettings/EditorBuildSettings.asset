@@ -5,10 +5,13 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Hospital/Hospital.unity
     guid: 946e2afe3b1b6154888f9604e1351ce8
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Hospital/Graveyard.unity
     guid: 1529ba3d40a4c104c8006b874f7fc583
+  - enabled: 1
+    path: Assets/Scenes/TAIJI/TAIJI.unity
+    guid: 7b22b8b8d33d1404fbff58a7f7b57f1c
   m_configObjects: {}
