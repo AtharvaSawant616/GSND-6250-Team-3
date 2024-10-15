@@ -1,9 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 
 public class Player2 : MonoBehaviour
 {
+    public int maxHealth = 100;
+    public int currentHealth;
+    public HealthBar healthBar;
+    public float damagePerSec = 5;
     public float moveSpeed = 6.0f;  // 移动速度
     public float jumpHeight = 2.0f; // 跳跃高度
     public float mouseSensitivity = 100f;  // 鼠标灵敏度
@@ -19,6 +24,8 @@ public class Player2 : MonoBehaviour
     {
         controller = GetComponent<CharacterController>();
         Cursor.lockState = CursorLockMode.Locked;
+        currentHealth = maxHealth;
+        healthBar.setMaxHealth(maxHealth);
     }
 
     void Update()
@@ -57,11 +64,24 @@ public class Player2 : MonoBehaviour
         // 跳跃
         if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
         {
-            velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity); // 计算跳跃速度
+            velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
         }
 
         // 应用重力
         velocity.y += gravity * Time.deltaTime;
         controller.Move(velocity * Time.deltaTime);
+
+        ContinueTakeDamage(damagePerSec * Time.deltaTime);
+
+    }
+
+    private void ContinueTakeDamage(float damage){
+        currentHealth = Mathf.Max(currentHealth - (int)damage, 0);
+        healthBar.setHealth(currentHealth);
+
+        if (currentHealth <= 0)
+        {
+            Debug.Log("Player has died.");
+        }
     }
 }
