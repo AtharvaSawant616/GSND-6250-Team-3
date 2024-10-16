@@ -2,9 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Player2 : MonoBehaviour
 {
+
+    public Text medNum;
+    public int medCount = 1;
     public int maxHealth = 100;
     public int currentHealth;
     public HealthBar healthBar;
@@ -82,6 +86,13 @@ public class Player2 : MonoBehaviour
         if (currentHealth <= 0)
         {
             Debug.Log("Player has died.");
+        }
+    }
+    private void OnTriggerEnter(Collider other) {
+        if(other.tag == "MedKit"){
+            Destroy(other.gameObject);
+            medCount++;
+            medNum.text = "X " + medCount.ToString();
         }
     }
 }
