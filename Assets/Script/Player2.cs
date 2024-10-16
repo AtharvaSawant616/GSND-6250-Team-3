@@ -6,6 +6,9 @@ using UnityEngine.UI;
 
 public class Player2 : MonoBehaviour
 {
+    public Text interactText;
+    private bool nearMedKit = false;
+    private GameObject currentMedKit;
 
     public Text medNum;
     public int medCount = 1;
@@ -30,10 +33,16 @@ public class Player2 : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         currentHealth = maxHealth;
         healthBar.setMaxHealth(maxHealth);
+        interactText.gameObject.SetActive(false);
     }
 
     void Update()
     {
+
+        if (nearMedKit && Input.GetKeyDown(KeyCode.E))
+        {
+            CollectMedKit();
+        }
         // 处理鼠标移动
         float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
         float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
@@ -76,7 +85,20 @@ public class Player2 : MonoBehaviour
         controller.Move(velocity * Time.deltaTime);
 
         ContinueTakeDamage(damagePerSec * Time.deltaTime);
+        RecoveryHealth();
 
+    }
+        private void CollectMedKit()
+    {
+        if (currentMedKit != null)
+        {
+            Destroy(currentMedKit); // 销毁 medkit
+            medCount++;
+            medNum.text = "X " + medCount.ToString();
+            interactText.gameObject.SetActive(false);
+            nearMedKit = false; // 关闭靠近 medkit 状态
+            currentMedKit = null; // 清空当前 medkit 引用
+        }
     }
 
     private void ContinueTakeDamage(float damage){
@@ -88,11 +110,36 @@ public class Player2 : MonoBehaviour
             Debug.Log("Player has died.");
         }
     }
-    private void OnTriggerEnter(Collider other) {
-        if(other.tag == "MedKit"){
-            Destroy(other.gameObject);
-            medCount++;
-            medNum.text = "X " + medCount.ToString();
+ private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("MedKit"))
+        {
+            nearMedKit = true; // 标记玩家已靠近 medkit
+            currentMedKit = other.gameObject; // 记录当前的 medkit 对象
+            interactText.gameObject.SetActive(true); // 显示交互提示
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("MedKit"))
+        {
+            nearMedKit = false; // 标记玩家离开 medkit
+            currentMedKit = null; // 清空当前 medkit 引用
+            interactText.gameObject.SetActive(false); // 隐藏交互提示
+        }
+    }
+
+    private void RecoveryHealth(){
+        if(Input.GetKeyDown(KeyCode.Q)&& medCount > 0){
+            if(currentHealth + 20 > 100){
+            currentHealth = 100;
+            }
+            else{
+                currentHealth += 20;
+            }
+            medCount--;
+            medNum.text = medCount.ToString();
         }
     }
 }

@@ -3,7 +3,32 @@ guid: ab9e1d5d529d03b4caf42fc77bd6def8
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Box_Mat
+    second: {fileID: 2100000, guid: ededc706d1e5e704c814b84ec1ecaff7, type: 2}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: BOX_Box_Mat_SG_BaseColor
+    second: {fileID: 2800000, guid: 69ed54f1c8fb3b9448618acea7a07ec3, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: BOX_Box_Mat_SG_Metalness
+    second: {fileID: 2800000, guid: 864c06eed6859ec42bd7c5bad83997bf, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: BOX_Box_Mat_SG_Normal
+    second: {fileID: 2800000, guid: 9cbb447fca4ccce4487eafaaa9eb7cfb, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: BOX_Box_Mat_SG_Roughness
+    second: {fileID: 2800000, guid: c078f794fc3074e4aa240e3592d6401e, type: 3}
   materials:
     materialImportMode: 2
     materialName: 0
