@@ -185,7 +185,7 @@ Material:
     - _Shininess: 0.078125
     - _Smoothness: 0.685
     - _SmoothnessTextureChannel: 0
-    - _Smoothness_Strength: 0
+    - _Smoothness_Strength: 0.52
     - _SpecularHighlights: 1
     - _SpecularStrength: 0.008
     - _SrcBlend: 1
@@ -228,10 +228,10 @@ Material:
     - _SpecColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
     - _Tilling: {r: -0.21, g: 1.33, b: 1, a: 1}
     - _UV_Offset: {r: 0, g: -0.58, b: 0, a: 0}
-    - _UV_TIlling: {r: 0.32, g: 0.32, b: 0, a: 0}
-    - _X_UV_Offset: {r: 0, g: 0.45, b: 0, a: 0}
+    - _UV_TIlling: {r: 0.2, g: 0.2, b: 0, a: 0}
+    - _X_UV_Offset: {r: 0, g: 0.84, b: 0, a: 0}
     - _Y_UV_Offset: {r: 0, g: 0, b: 0, a: 0}
-    - _Z_UV_Offset: {r: 0.45, g: 0, b: 0, a: 0}
+    - _Z_UV_Offset: {r: 0.84, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []
 --- !u!114 &7429465700237607874
 MonoBehaviour:
