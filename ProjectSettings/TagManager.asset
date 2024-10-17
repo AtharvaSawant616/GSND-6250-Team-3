@@ -9,6 +9,8 @@ TagManager:
   - Door
   - Enemy
   - MedKit
+  - Computer
+  - Computer1
   layers:
   - Default
   - TransparentFX

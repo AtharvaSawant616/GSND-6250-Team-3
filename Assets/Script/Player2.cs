@@ -12,6 +12,16 @@ public class Player2 : MonoBehaviour
 
     public Text medNum;
     public int medCount = 1;
+    public Text ComputerinteractText;
+    public Text Computer1interactText;
+    private bool nearComputer = false;
+    private bool nearComputer1 = false;
+    private GameObject currentFiles;
+    private GameObject currentFiles1;
+    public Text FileNum;
+    public int fileCount;
+
+
     public int maxHealth = 100;
     public int currentHealth;
     public HealthBar healthBar;
@@ -26,6 +36,9 @@ public class Player2 : MonoBehaviour
     private float xRotation = 0f;
     private float gravity = -9.8f;
     private bool isGrounded;
+    private bool getFile = false;
+    private bool getFile1 = false;
+    private float damageTimer = 0f;
 
     void Start()
     {
@@ -34,7 +47,17 @@ public class Player2 : MonoBehaviour
         currentHealth = maxHealth;
         healthBar.setMaxHealth(maxHealth);
         interactText.gameObject.SetActive(false);
+        ComputerinteractText.gameObject.SetActive(false);
+        Computer1interactText.gameObject.SetActive(false);
     }
+
+private void FixedUpdate() {
+    damageTimer += Time.fixedDeltaTime;
+    if (damageTimer >= 1.0f) { // 每1秒减少一次血量
+        ContinueTakeDamage(damagePerSec);
+        damageTimer = 0f; // 重置计时器
+    }
+}
 
     void Update()
     {
@@ -42,6 +65,13 @@ public class Player2 : MonoBehaviour
         if (nearMedKit && Input.GetKeyDown(KeyCode.E))
         {
             CollectMedKit();
+        }
+        if(nearComputer && Input.GetKeyDown(KeyCode.E)){
+            CollectFiles();
+        }
+        if (nearComputer1 && Input.GetKeyDown(KeyCode.E))
+        {
+            CollectFiles1(); // 新增从电脑1收集文件的方法
         }
         // 处理鼠标移动
         float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
@@ -84,7 +114,6 @@ public class Player2 : MonoBehaviour
         velocity.y += gravity * Time.deltaTime;
         controller.Move(velocity * Time.deltaTime);
 
-        ContinueTakeDamage(damagePerSec * Time.deltaTime);
         RecoveryHealth();
 
     }
@@ -98,6 +127,32 @@ public class Player2 : MonoBehaviour
             interactText.gameObject.SetActive(false);
             nearMedKit = false; // 关闭靠近 medkit 状态
             currentMedKit = null; // 清空当前 medkit 引用
+        }
+    }
+            private void CollectFiles()
+    {
+        if (currentFiles != null)
+        {
+            fileCount++;
+            getFile = true;
+            FileNum.text = fileCount.ToString() + " / " + "2";
+            ComputerinteractText.gameObject.SetActive(false);
+            nearComputer = false; // 关闭靠近 medkit 状态
+            currentFiles = null; // 清空当前 medkit 引用
+
+        }
+    }
+
+        private void CollectFiles1()
+    {
+        if (currentFiles1 != null)
+        {
+            fileCount++;
+            getFile1 = true;
+            FileNum.text = fileCount.ToString() + " / " + "2";
+            Computer1interactText.gameObject.SetActive(false); // 隐藏电脑1的交互文本
+            nearComputer1 = false;
+            currentFiles1 = null;
         }
     }
 
@@ -116,7 +171,17 @@ public class Player2 : MonoBehaviour
         {
             nearMedKit = true; // 标记玩家已靠近 medkit
             currentMedKit = other.gameObject; // 记录当前的 medkit 对象
-            interactText.gameObject.SetActive(true); // 显示交互提示
+        }
+        if(other.CompareTag("Computer") && !getFile){//检测玩家碰到此电脑以及已经获得文件
+            nearComputer = true;
+            currentFiles = other.gameObject;
+            ComputerinteractText.gameObject.SetActive(true);
+        }
+        if (other.CompareTag("Computer1") && !getFile1)
+        {
+            nearComputer1 = true;
+            currentFiles1 = other.gameObject;
+            Computer1interactText.gameObject.SetActive(true); // 显示电脑1的交互文本
         }
     }
 
@@ -127,6 +192,17 @@ public class Player2 : MonoBehaviour
             nearMedKit = false; // 标记玩家离开 medkit
             currentMedKit = null; // 清空当前 medkit 引用
             interactText.gameObject.SetActive(false); // 隐藏交互提示
+        }
+        if(other.CompareTag("Computer")){
+            nearComputer = false;
+            currentFiles = null;
+            ComputerinteractText.gameObject.SetActive(false);
+        }
+        if (other.CompareTag("Computer1"))
+        {
+            nearComputer1 = false;
+            currentFiles1 = null;
+            Computer1interactText.gameObject.SetActive(false); // 隐藏电脑1的交互文本
         }
     }
 
