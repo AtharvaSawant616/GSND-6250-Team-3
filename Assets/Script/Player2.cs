@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class Player2 : MonoBehaviour
 {
+    public ClosePage page;
     public Text interactText;
     private bool nearMedKit = false;
     private GameObject currentMedKit;
@@ -39,6 +40,7 @@ public class Player2 : MonoBehaviour
     private bool getFile = false;
     private bool getFile1 = false;
     private float damageTimer = 0f;
+    private bool isTakingDamage = false;
 
     void Start()
     {
@@ -49,15 +51,27 @@ public class Player2 : MonoBehaviour
         interactText.gameObject.SetActive(false);
         ComputerinteractText.gameObject.SetActive(false);
         Computer1interactText.gameObject.SetActive(false);
+        LockAndHideCursor();
+        isTakingDamage = false;
+
     }
 
-private void FixedUpdate() {
-    damageTimer += Time.fixedDeltaTime;
-    if (damageTimer >= 1.0f) { // 每1秒减少一次血量
-        ContinueTakeDamage(damagePerSec);
-        damageTimer = 0f; // 重置计时器
+    private void FixedUpdate()
+    {
+        if (isTakingDamage) // 仅在启用扣血时进行扣血
+        {
+            damageTimer += Time.fixedDeltaTime;
+            if (damageTimer >= 1.0f)
+            {
+                ContinueTakeDamage(damagePerSec);
+                damageTimer = 0f; // 重置计时器
+            }
+        }
     }
-}
+        public void EnableDamage()
+    {
+        isTakingDamage = true; // 激活扣血逻辑
+    }
 
     void Update()
     {
@@ -66,13 +80,24 @@ private void FixedUpdate() {
         {
             CollectMedKit();
         }
-        if(nearComputer && Input.GetKeyDown(KeyCode.E)){
+        if (nearComputer && Input.GetKeyDown(KeyCode.E))
+        {
             CollectFiles();
         }
         if (nearComputer1 && Input.GetKeyDown(KeyCode.E))
         {
             CollectFiles1(); // 新增从电脑1收集文件的方法
         }
+
+        // if (PageIsActive())
+        // {
+        //     UnlockAndShowCursor(); // 解锁并显示鼠标
+        //     return; // 如果 UI 界面显示，停止执行后续代码
+        // }
+        // else
+        // {
+        //     LockAndHideCursor(); // 界面关闭时锁定并隐藏鼠标
+        // }
         // 处理鼠标移动
         float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
         float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
@@ -117,7 +142,28 @@ private void FixedUpdate() {
         RecoveryHealth();
 
     }
-        private void CollectMedKit()
+
+    // public void EnablePlayerControl()
+    // {
+    //     LockAndHideCursor();
+    // }
+    private void LockAndHideCursor()
+    {
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+    }
+
+    // private void UnlockAndShowCursor()
+    // {
+    //     Cursor.lockState = CursorLockMode.None;
+    //     Cursor.visible = true;
+    // }
+
+    // private bool PageIsActive()
+    // {
+    //     return page.gameObject.activeSelf; // 检查 UI 是否显示
+    // }
+    private void CollectMedKit()
     {
         if (currentMedKit != null)
         {
@@ -129,7 +175,7 @@ private void FixedUpdate() {
             currentMedKit = null; // 清空当前 medkit 引用
         }
     }
-            private void CollectFiles()
+    private void CollectFiles()
     {
         if (currentFiles != null)
         {
@@ -143,7 +189,7 @@ private void FixedUpdate() {
         }
     }
 
-        private void CollectFiles1()
+    private void CollectFiles1()
     {
         if (currentFiles1 != null)
         {
@@ -156,7 +202,8 @@ private void FixedUpdate() {
         }
     }
 
-    private void ContinueTakeDamage(float damage){
+    private void ContinueTakeDamage(float damage)
+    {
         currentHealth = Mathf.Max(currentHealth - (int)damage, 0);
         healthBar.setHealth(currentHealth);
 
@@ -165,14 +212,15 @@ private void FixedUpdate() {
             Debug.Log("Player has died.");
         }
     }
- private void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("MedKit"))
         {
             nearMedKit = true; // 标记玩家已靠近 medkit
             currentMedKit = other.gameObject; // 记录当前的 medkit 对象
         }
-        if(other.CompareTag("Computer") && !getFile){//检测玩家碰到此电脑以及已经获得文件
+        if (other.CompareTag("Computer") && !getFile)
+        {//检测玩家碰到此电脑以及已经获得文件
             nearComputer = true;
             currentFiles = other.gameObject;
             ComputerinteractText.gameObject.SetActive(true);
@@ -193,7 +241,8 @@ private void FixedUpdate() {
             currentMedKit = null; // 清空当前 medkit 引用
             interactText.gameObject.SetActive(false); // 隐藏交互提示
         }
-        if(other.CompareTag("Computer")){
+        if (other.CompareTag("Computer"))
+        {
             nearComputer = false;
             currentFiles = null;
             ComputerinteractText.gameObject.SetActive(false);
@@ -206,12 +255,16 @@ private void FixedUpdate() {
         }
     }
 
-    private void RecoveryHealth(){
-        if(Input.GetKeyDown(KeyCode.Q)&& medCount > 0){
-            if(currentHealth + 20 > 100){
-            currentHealth = 100;
+    private void RecoveryHealth()
+    {
+        if (Input.GetKeyDown(KeyCode.Q) && medCount > 0)
+        {
+            if (currentHealth + 20 > 100)
+            {
+                currentHealth = 100;
             }
-            else{
+            else
+            {
                 currentHealth += 20;
             }
             medCount--;
