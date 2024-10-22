@@ -11,6 +11,7 @@ TagManager:
   - MedKit
   - Computer
   - Computer1
+  - Bullet
   layers:
   - Default
   - TransparentFX
