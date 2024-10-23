@@ -8,6 +8,10 @@ TagManager:
   - Key
   - Door
   - Enemy
+  - MedKit
+  - Computer
+  - Computer1
+  - Bullet
   layers:
   - Default
   - TransparentFX

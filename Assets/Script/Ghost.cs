@@ -14,6 +14,7 @@ public class Ghost : MonoBehaviour
     public Renderer enemyRenderer; // 敌人材质
     public MeshFilter meshFilter; // 用于显示视线的 MeshFilter
     public int segments = 50; // 扇形的分段数量
+    public int EnemyHealth = 6;
 
     private Vector3 startPosition;
     private bool isPlayerDetected = false;
@@ -33,6 +34,15 @@ public class Ghost : MonoBehaviour
         Patrol();
         DetectPlayer();
         CreateViewMesh();
+    }
+
+    private void OnTriggerEnter(Collider other) {
+        if(other.tag == "Bullet"){
+            EnemyHealth--;
+            if(EnemyHealth <=0){
+                Destroy(gameObject);
+            }
+        }
     }
 
 
@@ -127,11 +137,11 @@ public class Ghost : MonoBehaviour
 
     void CreateViewMesh()
     {
-        if (meshFilter == null)
-        {
-            Debug.LogError("MeshFilter is not assigned!");
-            return;
-        }
+        // if (meshFilter == null)
+        // {
+        //     Debug.LogError("MeshFilter is not assigned!");
+        //     return;
+        // }
 
         Debug.Log("Creating Mesh...");
         Mesh mesh = new Mesh();
