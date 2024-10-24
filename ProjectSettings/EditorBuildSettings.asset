@@ -17,7 +17,10 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/Level 4/Level 4.unity
     guid: 2d5efafc09878084a978ee1020078168
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Lab/Lab.unity
     guid: 05ab696bd3fd34d4ba620b847221caff
+  - enabled: 1
+    path: Assets/Scenes/FPS/FPS.unity
+    guid: f40b39c24c7e3464ab2f25ee3bcf1120
   m_configObjects: {}
