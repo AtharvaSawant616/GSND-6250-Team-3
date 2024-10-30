@@ -3,7 +3,22 @@ guid: 1bf341d57e895b74ab6f2d5da1ba1a5d
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Belt_Mat
+    second: {fileID: 2100000, guid: 81f08dbcb97423b499f48312adbef50e, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Button_Mat
+    second: {fileID: 2100000, guid: a2768855fb3660348a5a07319a04672d, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Medal_Mat
+    second: {fileID: 2100000, guid: a410e01dc09531c4f9022b569679d980, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
