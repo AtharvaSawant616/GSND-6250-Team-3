@@ -13,6 +13,9 @@ TagManager:
   - Computer1
   - Bullet
   - Depression report
+  - Diary
+  - DeathReport
+  - ExitGate
   layers:
   - Default
   - TransparentFX
