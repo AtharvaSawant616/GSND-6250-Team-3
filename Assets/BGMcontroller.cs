@@ -7,6 +7,9 @@ public class BGMcontroller : MonoBehaviour
     public AudioSource portalSoundSource;   // 改为 public
     public Transform playerTransform;       // 玩家位置的 Transform
     public Transform referencePoint;        // 起始点或参考点的 Transform
+    public AudioSource AliTvSource;
+    public AudioSource ChampionWin;
+    public AudioSource BGM;
 
     public float maxVolume = 1.0f;          // 音量最大值
     public float maxDistance = 50.0f;       // 当距离超过此值时音量达到最大
@@ -19,6 +22,7 @@ public class BGMcontroller : MonoBehaviour
     void Update()
     {
         AdjustVolumeBasedOnDistance();
+
     }
 
     private void PlayMusic(){

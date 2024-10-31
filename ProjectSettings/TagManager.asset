@@ -16,6 +16,15 @@ TagManager:
   - Diary
   - DeathReport
   - ExitGate
+  - AliTv
+  - ChampionWin
+  - AccidentalReport
+  - Ali
+  - Glove
+  - WinPicture
+  - MarryPicture
+  - EndTextTrigger
+  - BGM
   layers:
   - Default
   - TransparentFX
