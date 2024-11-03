@@ -3,7 +3,32 @@ guid: 2f90165b665cabd41821709601a33fa6
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Trophy_Mat
+    second: {fileID: 2100000, guid: d1d37354faa2bb3499a3c57952b55361, type: 2}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Trophy_Trophy_Mat_SG_BaseColor
+    second: {fileID: 2800000, guid: b76e8baef048ddf4c98784648aec6145, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Trophy_Trophy_Mat_SG_Metalness
+    second: {fileID: 2800000, guid: 421a1d08028d0b7489c1985ddb114d50, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Trophy_Trophy_Mat_SG_Normal
+    second: {fileID: 2800000, guid: f7a557780cd097f429717885bfcaecf0, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Trophy_Trophy_Mat_SG_Roughness
+    second: {fileID: 2800000, guid: 39a358f4761ae0b4c912898b9fc0e7c8, type: 3}
   materials:
     materialImportMode: 2
     materialName: 0

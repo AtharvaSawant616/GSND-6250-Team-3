@@ -3,7 +3,32 @@ guid: a4eb24a8a16675a439b8b7cfe1ec5608
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Stone1_Mat
+    second: {fileID: 2100000, guid: 98f6d8112765b1a4dad67265d2c5a7fa, type: 2}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: GStone1_Stone1_Mat_SG_BaseColor
+    second: {fileID: 2800000, guid: 3f9a48283f822f84aa613abebafb3511, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: GStone1_Stone1_Mat_SG_Metalness
+    second: {fileID: 2800000, guid: fdc3410790c236448939ff92b19e3fad, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: GStone1_Stone1_Mat_SG_Normal
+    second: {fileID: 2800000, guid: 66b742446edec8a4d973dc09e52faf4f, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: GStone1_Stone1_Mat_SG_Roughness
+    second: {fileID: 2800000, guid: d5deb1d0fb223304ebf4d00dc56e3cb8, type: 3}
   materials:
     materialImportMode: 2
     materialName: 0
