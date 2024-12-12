@@ -25,6 +25,7 @@ TagManager:
   - MarryPicture
   - EndTextTrigger
   - BGM
+  - Table
   layers:
   - Default
   - TransparentFX

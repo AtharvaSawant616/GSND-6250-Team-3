@@ -1,9 +1,34 @@
 fileFormatVersion: 2
-guid: 4e4923ed0c6428c4d8cf8cb106fe64d1
+guid: 74cfbb3635d98ff4f9e9b777c6f3a724
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Cabinet_Mat
+    second: {fileID: 2100000, guid: 545c578f4daade541b759ed20a11ec28, type: 2}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Cabinet1_Cabinet_Mat_BaseColor
+    second: {fileID: 2800000, guid: e8b3c36b31a00ad4c868bcea0e63c0d5, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Cabinet1_Cabinet_Mat_Metalness
+    second: {fileID: 2800000, guid: 7cc00ca36f1f8af4aa4ebd699b2e33c8, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Cabinet1_Cabinet_Mat_Normal
+    second: {fileID: 2800000, guid: 82cf3d15c7cf63f4ba49e109bf61dadc, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Cabinet1_Cabinet_Mat_Roughness
+    second: {fileID: 2800000, guid: 15cadab255772954b8368f06ab9fc49e, type: 3}
   materials:
     materialImportMode: 2
     materialName: 0

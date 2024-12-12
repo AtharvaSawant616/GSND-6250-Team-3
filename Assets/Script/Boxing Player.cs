@@ -20,6 +20,7 @@ public class BoxingPlayer : MonoBehaviour
     public Text LucyDiary;
     public Text ACText;
     public Text WifeDead;
+    public Text Table;
     public Image DiaryImage;
     public Image DeathReport;
     public Image Trophy2D;
@@ -40,6 +41,7 @@ public class BoxingPlayer : MonoBehaviour
     private bool isNearGlove = false;
     private bool isnearWinPicture = false;
     private bool isnearMarryPicture = false;
+    private bool isnearTable = false;
 
     void Start()
     {
@@ -123,6 +125,18 @@ public class BoxingPlayer : MonoBehaviour
         {
             StartCoroutine(ShowAliPosterText());
         }
+        if (isnearTable && Input.GetKeyDown(KeyCode.E))
+        {
+            StartCoroutine(TableText());
+        }
+        if (isNearAi && Input.GetKeyDown(KeyCode.E))
+        {
+            StartCoroutine(ShowAliPosterText());
+        }
+        if (isNearAi && Input.GetKeyDown(KeyCode.E))
+        {
+            StartCoroutine(ShowAliPosterText());
+        }
         if (isNearGlove && Input.GetKeyDown(KeyCode.E))
         {
             StartCoroutine(ShowGloveText());
@@ -137,11 +151,11 @@ public class BoxingPlayer : MonoBehaviour
         }
         if (Input.GetMouseButtonDown(1) || Input.GetKeyDown(KeyCode.Escape))
         {
-            depressionReport.gameObject.SetActive(false);
-            DiaryImage.gameObject.SetActive(false);
-            DeathReport.gameObject.SetActive(false);
-            Trophy2D.gameObject.SetActive(false);
-            AccidentalReport.gameObject.SetActive(false);
+            //depressionReport.gameObject.SetActive(false);
+            //DiaryImage.gameObject.SetActive(false);
+            //DeathReport.gameObject.SetActive(false);
+            //Trophy2D.gameObject.SetActive(false);
+            //AccidentalReport.gameObject.SetActive(false);
             Debug.Log("Pressing the left mouse button");
         }
     }
@@ -212,6 +226,10 @@ public class BoxingPlayer : MonoBehaviour
         if(other.CompareTag("EndTextTrigger")){
             EndTextManage.gameObject.SetActive(true);
         }
+        if(other.CompareTag("Table"))
+        {
+            PressEtoOpen.gameObject.SetActive(true);
+        }
 
     }
 
@@ -265,6 +283,11 @@ public class BoxingPlayer : MonoBehaviour
         if (other.CompareTag("MarryPicture"))
         {
             isnearMarryPicture = false;
+            PressEtoOpen.gameObject.SetActive(false);
+        }
+        if(other.CompareTag("Table"))
+        {
+            isnearTable = false;
             PressEtoOpen.gameObject.SetActive(false);
         }
     }
@@ -329,6 +352,14 @@ public class BoxingPlayer : MonoBehaviour
         WifeDead.gameObject.SetActive(true);
         yield return new WaitForSeconds(5f);
         WifeDead.gameObject.SetActive(false);
+    }
+
+    private IEnumerator TableText()
+    {
+        yield return new WaitForSeconds(1f);
+        Table.gameObject.SetActive(true);
+        yield return new WaitForSeconds(3f);
+        Table.gameObject.SetActive(false);
     }
 
 
